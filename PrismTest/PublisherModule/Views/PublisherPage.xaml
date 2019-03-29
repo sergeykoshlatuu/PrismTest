@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="PublisherModule.Views.PublisherPage">
+    <StackLayout VerticalOptions="CenterAndExpand">
+
+
+        <Label Text="Name" />
+        <Entry Text="{Binding Name}" x:Name="Name"/>
+        <Button Text="Save" Command="{Binding SaveCommand}" />
+        <Button Text="Delete" Command="{Binding DeleteCommand}" />
+
+    </StackLayout>
+</ContentPage>
