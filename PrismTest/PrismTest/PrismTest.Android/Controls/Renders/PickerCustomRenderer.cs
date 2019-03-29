@@ -9,7 +9,6 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using PrismTest.Controls;
 using PrismTest.Droid.Controls.Renders;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;

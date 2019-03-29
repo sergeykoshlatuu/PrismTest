@@ -7,6 +7,7 @@ namespace PublisherModule.Views
         public PublisherPage()
         {
             InitializeComponent();
+            NavigationPage.SetHasBackButton(this, false);
         }
     }
 }

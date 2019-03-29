@@ -1,8 +1,10 @@
 ﻿using Foundation;
 using Prism;
+using Prism.Events;
 using Prism.Ioc;
-using PrismTest.Interfaces;
 using PrismTest.iOS.Services;
+using PrismTestClassLibrary.Events;
+using PrismTestClassLibrary.Interfaces;
 using UIKit;
 
 
@@ -12,7 +14,7 @@ namespace PrismTest.iOS
     // User Interface of the application, as well as listening (and optionally responding) to 
     // application events from iOS.
     [Register("AppDelegate")]
-    public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
+    public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate, IPlatformInitializer
     {
         //
         // This method is invoked when the application has loaded and is ready to run. In this 
@@ -24,18 +26,33 @@ namespace PrismTest.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
-            LoadApplication(new App(new iOSInitializer()));
+            var application = new App(this);
+
+            var ea = application.Container.Resolve<IEventAggregator>().GetEvent<NativeEvent>().Subscribe(OnNameChangedEvent);
+
+            LoadApplication(application);
 
             return base.FinishedLaunching(app, options);
         }
-    }
 
-    public class iOSInitializer : IPlatformInitializer
-    {
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             // Register any platform specific implementations
             containerRegistry.RegisterInstance<IDatabaseConnectionService>(new DatabaseConnectionService());
         }
+
+
+        private void OnNameChangedEvent(NativeEventArgs args)
+        {
+            var alertView = new UIAlertView
+            {
+                Title = "Native Alert",
+                Message = args.Message
+            };
+            alertView.AddButton("OK");
+            alertView.Show();
+        }
     }
+
+
 }

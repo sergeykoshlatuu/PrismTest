@@ -7,6 +7,7 @@ namespace AuthorModule.Views
         public AuthorPage()
         {
             InitializeComponent();
+            NavigationPage.SetHasBackButton(this, false);
         }
     }
 }

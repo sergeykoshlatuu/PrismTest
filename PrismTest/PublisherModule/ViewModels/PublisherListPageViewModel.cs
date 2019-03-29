@@ -39,7 +39,7 @@ namespace PublisherModule.ViewModels
 
         void ExecuteNavigateToPublishersPageCommand()
         {
-            _navigationService.NavigateAsync("PublisherPage");
+            _navigationService.NavigateAsync("PublisherPage", null, false, false);
         }
 
         private void ListView_ItemTappedMethod(object Publisher)
@@ -47,7 +47,7 @@ namespace PublisherModule.ViewModels
             var publisher = Publisher as Publisher;
             var navigationParams = new NavigationParameters();
             navigationParams.Add("model", publisher);
-            _navigationService.NavigateAsync("PublisherPage", navigationParams);
+            _navigationService.NavigateAsync("PublisherPage", navigationParams,false,false);
         }
     }
 }

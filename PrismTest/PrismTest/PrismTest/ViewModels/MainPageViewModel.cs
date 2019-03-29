@@ -19,13 +19,24 @@ namespace PrismTest.ViewModels
         {
             _moduleManager = moduleManager;
             Title = "Main Page";
+            NavigateCommand = new DelegateCommand<string>(OnNavigateCommandExecuted);
+          
 
+        }
+
+        public DelegateCommand<string> NavigateCommand { get; }
+
+        private async void OnNavigateCommandExecuted(string path)
+        {
+            _moduleManager.LoadModule("BookModuleModule");
+            _moduleManager.LoadModule("AuthorModuleModule");
+            _moduleManager.LoadModule("PublisherModuleModule");
+            await NavigationService.NavigateAsync(path);
         }
 
         private DelegateCommand _navigateToBooksPageCommand;
         public DelegateCommand NavigateToBooksPageCommand =>
             _navigateToBooksPageCommand ?? (_navigateToBooksPageCommand = new DelegateCommand(ExecuteNavigateToBooksPageCommand));
-
         void ExecuteNavigateToBooksPageCommand()
         {
             _moduleManager.LoadModule("BookModuleModule");
@@ -36,7 +47,6 @@ namespace PrismTest.ViewModels
         private DelegateCommand _navigateToAuthorPageCommand;
         public DelegateCommand NavigateToAuthorsPageCommand =>
             _navigateToAuthorPageCommand ?? (_navigateToAuthorPageCommand = new DelegateCommand(ExecuteNavigateToAuthorsPageCommand));
-
         void ExecuteNavigateToAuthorsPageCommand()
         {
             _moduleManager.LoadModule("AuthorModuleModule");
@@ -47,7 +57,6 @@ namespace PrismTest.ViewModels
         private DelegateCommand _navigateToPublishersPageCommand;
         public DelegateCommand NavigateToPublishersPageCommand =>
             _navigateToPublishersPageCommand ?? (_navigateToPublishersPageCommand = new DelegateCommand(ExecuteNavigateToPublishersPageCommand));
-
         void ExecuteNavigateToPublishersPageCommand()
         {
             _moduleManager.LoadModule("PublisherModuleModule");

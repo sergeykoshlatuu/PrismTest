@@ -1,6 +1,8 @@
 ﻿using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using Prism.Navigation;
+using PrismTestClassLibrary.Events;
 using PrismTestClassLibrary.Interfaces;
 using PrismTestClassLibrary.Models;
 using System;
@@ -11,17 +13,19 @@ namespace AuthorModule.ViewModels
 {
 	public class AuthorPageViewModel : BindableBase , INavigationAware
     {
-        public AuthorPageViewModel(INavigationService navigationService, IAuthorService authorService)
+        public AuthorPageViewModel(INavigationService navigationService, IAuthorService authorService, IEventAggregator eventAggregator)
         {
             _navigationService = navigationService;
-           
+            _eventAggregator = eventAggregator;
             _authorService = authorService;
             IsDeleteVisible = false;
         }
 
+
         #region Var and props
-        INavigationService _navigationService;
-        IAuthorService _authorService;
+        private INavigationService _navigationService;
+        private IAuthorService _authorService;
+        private IEventAggregator _eventAggregator;
 
         private int _id;
         public int Id
@@ -79,7 +83,8 @@ namespace AuthorModule.ViewModels
         {
             Author author = new Author { Id = Id, FirstName = FirstName,LastName=LastName };
             _authorService.AddAuthors(author);
-            _navigationService.NavigateAsync("MainPage");
+            _navigationService.NavigateAsync("/Index/Navigation/AuthorListPage");
+            _eventAggregator.GetEvent<NativeEvent>().Publish(new NativeEventArgs("Save succsesfull"));
         }
 
         private DelegateCommand _deleteCommand;
@@ -90,7 +95,8 @@ namespace AuthorModule.ViewModels
         {
             Author author = new Author { Id = Id, FirstName = FirstName, LastName = LastName };
             _authorService.DeleteAuthors(author);
-            _navigationService.NavigateAsync("MainPage");
+            _navigationService.NavigateAsync("/Index/Navigation/AuthorListPage");
+            _eventAggregator.GetEvent<NativeEvent>().Publish(new NativeEventArgs("Delete succsesfull"));
         }
     }
 }

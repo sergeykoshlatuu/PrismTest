@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 
 using Foundation;
-using PrismTest.Interfaces;
+using PrismTestClassLibrary.Interfaces;
 using SQLite;
 using UIKit;
 

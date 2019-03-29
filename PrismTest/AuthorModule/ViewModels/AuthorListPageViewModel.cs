@@ -35,7 +35,7 @@ namespace AuthorModule.ViewModels
 
         void ExecuteNavigateToAuthorPageCommand()
         {
-            _navigationService.NavigateAsync("AuthorPage");
+            _navigationService.NavigateAsync("AuthorPage", null, false, false);
         }
 
         public DelegateCommand<object> ItemTappedCommand { get; set; }
@@ -46,7 +46,7 @@ namespace AuthorModule.ViewModels
             var author = parameter as Author;
             var navigationParams = new NavigationParameters();
             navigationParams.Add("model", author);
-            _navigationService.NavigateAsync("AuthorPage", navigationParams);
+            _navigationService.NavigateAsync("AuthorPage", navigationParams,false,false);
         }
     }
 }

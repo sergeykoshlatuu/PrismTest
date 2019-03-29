@@ -5,13 +5,12 @@
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="PublisherModule.Views.PublisherPage">
+    
     <StackLayout VerticalOptions="CenterAndExpand">
-
-
         <Label Text="Name" />
         <Entry Text="{Binding Name}" x:Name="Name"/>
         <Button Text="Save" Command="{Binding SaveCommand}" />
-        <Button Text="Delete" Command="{Binding DeleteCommand}" />
+        <Button Text="Delete" Command="{Binding DeleteCommand}" IsVisible="{Binding IsDeleteVisible}" />
 
     </StackLayout>
 </ContentPage>

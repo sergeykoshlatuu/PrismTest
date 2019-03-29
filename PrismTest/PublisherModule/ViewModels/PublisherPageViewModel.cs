@@ -1,6 +1,8 @@
 ﻿using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using Prism.Navigation;
+using PrismTestClassLibrary.Events;
 using PrismTestClassLibrary.Interfaces;
 using PrismTestClassLibrary.Models;
 using System;
@@ -12,14 +14,17 @@ namespace PublisherModule.ViewModels
 	public class PublisherPageViewModel : BindableBase , INavigationAware
     {
 
-        public PublisherPageViewModel(INavigationService navigationService, IPublisherService publisherService) 
+        public PublisherPageViewModel(INavigationService navigationService, IPublisherService publisherService, IEventAggregator eventAggregator) 
         {
             _navigationService = navigationService;
             _publisherService = publisherService;
+            _eventAggregator = eventAggregator;
+            IsDeleteVisible = false;
         }
 
-        #region variable and property
 
+        #region variable and property
+        IEventAggregator _eventAggregator;
         private IPublisherService _publisherService;
         private INavigationService _navigationService;
 
@@ -27,7 +32,9 @@ namespace PublisherModule.ViewModels
         public int Id
         {
             get { return _id; }
-            set { SetProperty(ref _id, value); }
+            set { SetProperty(ref _id, value);
+                IsDeleteVisible = true;
+            }
         }
 
         private string _name;
@@ -37,6 +44,12 @@ namespace PublisherModule.ViewModels
             set { SetProperty(ref _name, value); }
         }
 
+        private bool _isDeleteVisible;
+        public bool IsDeleteVisible
+        {
+            get { return _isDeleteVisible; }
+            set { SetProperty(ref _isDeleteVisible, value); }
+        }
         #endregion
 
         private DelegateCommand _saveCommand;
@@ -47,7 +60,8 @@ namespace PublisherModule.ViewModels
         {
             Publisher publisher = new Publisher { Id = Id, Name = Name };
             _publisherService.AddPublisher(publisher);
-            _navigationService.NavigateAsync("MainPage");
+            _navigationService.NavigateAsync("/Index/Navigation/PublisherListPage");
+            _eventAggregator.GetEvent<NativeEvent>().Publish(new NativeEventArgs("Save succsesfull"));
         }
 
         private DelegateCommand _deleteCommand;
@@ -58,7 +72,8 @@ namespace PublisherModule.ViewModels
         {
             Publisher publisher = new Publisher { Id = Id, Name = Name };
             _publisherService.DeletePublisher(publisher);
-            _navigationService.NavigateAsync("MainPage");
+            _navigationService.NavigateAsync("/Index/Navigation/PublisherListPage");
+            _eventAggregator.GetEvent<NativeEvent>().Publish(new NativeEventArgs("Delete succsesfull"));
         }
 
        
@@ -70,14 +85,14 @@ namespace PublisherModule.ViewModels
 
         public void OnNavigatingTo(INavigationParameters parameters)
         {
-            Publisher publisher = parameters.GetValue<Publisher>("model");
-            Id = publisher.Id;
-            Name = publisher.Name;
+            
         }
 
         public void OnNavigatedTo(INavigationParameters parameters)
         {
-           
-    }
+            Publisher publisher = parameters.GetValue<Publisher>("model");
+            Id = publisher.Id;
+            Name = publisher.Name;
+        }
     }
 }

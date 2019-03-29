@@ -33,13 +33,13 @@ namespace PrismTest
         {
             InitializeComponent();
 
-            await NavigationService.NavigateAsync("NavigationPage/MainPage");
+            await NavigationService.NavigateAsync("/Index/Navigation/BookListPage");
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterForNavigation<NavigationPage>();
-            containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
+            containerRegistry.RegisterForNavigation<NavigationPage>("Navigation");
+            containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>("Index");
 
             DBService = this.Container.Resolve<IDatabaseConnectionService>();
             containerRegistry.RegisterInstance<IBookService>(new BookService(DBService));

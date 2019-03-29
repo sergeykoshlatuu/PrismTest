@@ -35,7 +35,7 @@ namespace BookModule.ViewModels
 
         void ExecuteNavigateToBookPageCommand()
         {
-            _navigationService.NavigateAsync("BookPage");
+            _navigationService.NavigateAsync("BookPage", null, false, false);
         }
 
         public DelegateCommand<object> ItemTappedCommand { get; set; }
@@ -46,7 +46,7 @@ namespace BookModule.ViewModels
             var book = books as Book;
             var navigationParams = new NavigationParameters();
             navigationParams.Add("model", book);
-            _navigationService.NavigateAsync("BookPage", navigationParams);
+            _navigationService.NavigateAsync("BookPage", navigationParams,false,false);
         }
     }
 }

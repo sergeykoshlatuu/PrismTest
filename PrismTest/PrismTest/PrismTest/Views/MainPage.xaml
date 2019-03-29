@@ -1,22 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-            xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
-             xmlns:c1="clr-namespace:PrismTest.Converters"
-             x:Class="PrismTest.Views.MainPage"
-             Title="{Binding Title}" 
-            >
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <c1:ItemTappedEventArgsConverter x:Key="itemTappedEventArgsConverter" />
-        </ResourceDictionary>
-    </ContentPage.Resources>
-
-    <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
-        <Button Text="Navigate to books page" Command="{Binding NavigateToBooksPageCommand}" />
-        <Button Text="Navigate to authors page" Command="{Binding NavigateToAuthorsPageCommand}" />
-        <Button Text="Navigate to publishers page" Command="{Binding NavigateToPublishersPageCommand}" />
-
-    </StackLayout>
-
-</ContentPage>
+<MasterDetailPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="PrismTest.Views.MainPage">
+    <MasterDetailPage.Master>
+        <!-- Hamburger Menu Secret Sauce... Add an Icon!!!! Make sure it's in your resources for your Platform Project -->
+        <NavigationPage Title="Required Foo" Icon="hamburger.png">
+            <x:Arguments>
+                <ContentPage Title="Menu">
+                    <StackLayout Padding="40">
+                        <Button Text="Book" Command="{Binding NavigateCommand}" CommandParameter="Navigation/BookListPage" />
+                        <Button Text="Author" Command="{Binding NavigateCommand}" CommandParameter="Navigation/AuthorListPage" />
+                        <Button Text="Publisher" Command="{Binding NavigateCommand}" CommandParameter="Navigation/PublisherListPage" />
+                    </StackLayout>
+                </ContentPage>
+            </x:Arguments>
+        </NavigationPage>
+    </MasterDetailPage.Master>
+</MasterDetailPage>

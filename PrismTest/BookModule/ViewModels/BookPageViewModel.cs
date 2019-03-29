@@ -1,6 +1,8 @@
 ﻿using Prism.Commands;
+using Prism.Events;
 using Prism.Mvvm;
 using Prism.Navigation;
+using PrismTestClassLibrary.Events;
 using PrismTestClassLibrary.Interfaces;
 using PrismTestClassLibrary.Models;
 using System;
@@ -11,16 +13,17 @@ namespace BookModule.ViewModels
 {
 	public class BookPageViewModel : BindableBase, INavigationAware
     {
-        public BookPageViewModel(INavigationService navigationService, IBookService bookService, IAuthorService authorService, IPublisherService publisherService)
+        public BookPageViewModel(INavigationService navigationService, IBookService bookService, IAuthorService authorService, IPublisherService publisherService, IEventAggregator eventAggregator)
         {
             _navigationService = navigationService;
             _bookService = bookService;
             _authorService = authorService;
             _publisherService = publisherService;
+            _eventAggregator = eventAggregator;
             Authors = _authorService.LoadListAuthors();
             Publishers = _publisherService.LoadListPublisher();
         }
-
+        IEventAggregator _eventAggregator;
         #region Var and props
         INavigationService _navigationService;
         IBookService _bookService;
@@ -125,7 +128,8 @@ namespace BookModule.ViewModels
         {
             Book book = new Book { Id = Id, AuthorId = AuthorId, Name = Name, PublisherId = PublisherId, Year = Year };
             _bookService.AddBook(book);
-            _navigationService.NavigateAsync("MainPage");
+            _navigationService.NavigateAsync("/Index/Navigation/BookListPage");
+            _eventAggregator.GetEvent<NativeEvent>().Publish(new NativeEventArgs("Save succsesfull"));
         }
 
         private DelegateCommand _deleteCommand;
@@ -137,7 +141,8 @@ namespace BookModule.ViewModels
 
             Book book = new Book { Id = Id, AuthorId = AuthorId, Name = Name, PublisherId = PublisherId, Year = Year };
             _bookService.DeleteBook(book);
-            _navigationService.NavigateAsync("MainPage");
+            _navigationService.NavigateAsync("/Index/Navigation/BookListPage");
+            _eventAggregator.GetEvent<NativeEvent>().Publish(new NativeEventArgs("Delete succsesfull"));
         }
     }
 }

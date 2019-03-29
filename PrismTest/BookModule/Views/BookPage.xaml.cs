@@ -7,6 +7,7 @@ namespace BookModule.Views
         public BookPage()
         {
             InitializeComponent();
+            NavigationPage.SetHasBackButton(this, false);
         }
     }
 }
